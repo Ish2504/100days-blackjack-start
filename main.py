@@ -62,32 +62,63 @@
 from art import logo
 import random
 
-user_choice = input("Do you want to play a game of Blackjack? Type 'y' or 'n': ").lower()
 
-def deal_card(cards):
-  return random.choice(cards)
+def deal_card(*args):
+  return random.choice(*args)
 
-def calculate_score(x):
-  return sum(x)
 
-if user_choice == 'y':
+def calculate_score(*args):
+  if len(*args) == 2:
+    if sum(*args) == 21:
+      return 0
+  elif 11 in args:
+    if sum(args) > 21:
+      args.remove(11)
+      args.append(1)
+      return sum(args)
+  return sum(*args)
+
+
+cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+
+def black_jack_game():
   print(logo)
 
-  cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+end_of_the_game = False
 
-  user_cards = []
-  computer_cards = []
+while not end_of_the_game:
+  user_choice = input("Do you want to play a game of Blackjack? Type 'y' or 'n': ").lower()
+  if user_choice == 'y':
 
-  user_cards.append(deal_card(cards))
-  user_cards.append(deal_card(cards))
+    user_cards = []
+    computer_cards = []
 
-  computer_cards.append(deal_card(cards))
-  computer_cards.append(deal_card(cards))
-
-  print(f"Your cards {user_cards}, current score: {calculate_score(user_cards)}")
-  print(f"Computer first card: {computer_cards[0]}")
-
-
-  if input("Type 'y' to get another card, or type 'n' to pass: ").lower() == 'y':
     user_cards.append(deal_card(cards))
-  print(user_cards)
+    user_cards.append(deal_card(cards))
+
+    computer_cards.append(deal_card(cards))
+    computer_cards.append(deal_card(cards))
+
+    if calculate_score(user_cards) == 0:
+      end_of_the_game = True
+    elif calculate_score(computer_cards) == 0:
+      end_of_the_game = True
+
+    print(f"Your cards {user_cards}, current score: {calculate_score(user_cards)}")
+    print(f"Computer first card: {computer_cards[0]}")
+
+
+    while sum(user_cards) <= 21 and input("Type 'y' to get another card, or type 'n' to pass: ").lower() == 'y':
+      user_cards.append(deal_card(cards))
+      print(user_cards)
+
+    else:
+      end_of_the_game = True
+
+else:
+  
+  print("The game has ended")
+
+
+
+black_jack_game()
