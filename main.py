@@ -61,22 +61,23 @@
 
 from art import logo
 import random
+# from replit import clear
 
 
 def deal_card(*args):
   return random.choice(*args)
 
 
-def calculate_score(*args):
-  if len(*args) == 2:
-    if sum(*args) == 21:
+def calculate_score(args):
+  if len(args) == 2:
+    if sum(args) == 21:
       return 0
   elif 11 in args:
     if sum(args) > 21:
       args.remove(11)
       args.append(1)
       return sum(args)
-  return sum(*args)
+  return sum(args)
 
 
 cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
@@ -84,40 +85,51 @@ cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 def black_jack_game():
   print(logo)
 
-end_of_the_game = False
+  end_of_the_game = False
 
-while not end_of_the_game:
-  user_choice = input("Do you want to play a game of Blackjack? Type 'y' or 'n': ").lower()
-  if user_choice == 'y':
+  while not end_of_the_game:
+    user_choice = input("Do you want to play a game of Blackjack? Type 'y' or 'n': ").lower()
+    if user_choice == 'y':
 
-    user_cards = []
-    computer_cards = []
+      user_cards = []
+      computer_cards = []
 
-    user_cards.append(deal_card(cards))
-    user_cards.append(deal_card(cards))
-
-    computer_cards.append(deal_card(cards))
-    computer_cards.append(deal_card(cards))
-
-    if calculate_score(user_cards) == 0:
-      end_of_the_game = True
-    elif calculate_score(computer_cards) == 0:
-      end_of_the_game = True
-
-    print(f"Your cards {user_cards}, current score: {calculate_score(user_cards)}")
-    print(f"Computer first card: {computer_cards[0]}")
-
-
-    while sum(user_cards) <= 21 and input("Type 'y' to get another card, or type 'n' to pass: ").lower() == 'y':
       user_cards.append(deal_card(cards))
-      print(user_cards)
+      user_cards.append(deal_card(cards))
 
-    else:
-      end_of_the_game = True
+      computer_cards.append(deal_card(cards))
+      computer_cards.append(deal_card(cards))
 
-else:
-  
-  print("The game has ended")
+      print(f"Your cards {user_cards}, current score: {calculate_score(user_cards)}")
+      print(f"Computer first card: {computer_cards[0]}")
+
+
+      if calculate_score(user_cards) == 0:
+        end_of_the_game = True
+        print(f"You Win! Your score 21 with {user_cards} cards.")
+      elif calculate_score(computer_cards) == 0:
+        end_of_the_game = True
+        print(f"You Lose! Computer score 21 with {computer_cards} cards.")
+      else:
+        while calculate_score(user_cards) < 21 and input("Type 'y' to get another card, or type 'n' to pass: ").lower() == 'y':
+          user_cards.append(deal_card(cards))
+          print(f"Your cards {user_cards}, current score: {calculate_score(user_cards)}")
+          if calculate_score(user_cards) == 21:
+            print(f"You Win! Your score 21 with {user_cards} cards.")
+            end_of_the_game = True
+
+        else:
+          while calculate_score(computer_cards) < 17:
+            computer_cards.append(deal_card(cards))
+            print(f"Computer cards {computer_cards}, current score: {calculate_score(computer_cards)}")
+            if calculate_score(user_cards) == 21:
+              print(f"You Lose! Computer score 21 with {computer_cards} cards.")
+          end_of_the_game = True
+
+  else:
+    print("The game has ended")
+    # clear()
+    black_jack_game()
 
 
 
