@@ -64,8 +64,8 @@ import random
 # from replit import clear
 
 
-def deal_card(*args):
-  return random.choice(*args)
+def deal_card(args):
+  return random.choice(args)
 
 
 def calculate_score(args):
@@ -78,6 +78,26 @@ def calculate_score(args):
       args.append(1)
       return sum(args)
   return sum(args)
+
+def compare(user_cards, computer_cards):
+  #Create a function called compare() and pass in the user_score and computer_score. If the computer and user both have the same score, then it's a draw. If the computer has a blackjack (0), then the user loses. If the user has a blackjack (0), then the user wins. If the user_score is over 21, then the user loses. If the computer_score is over 21, then the computer loses. If none of the above, then the player with the highest score wins.#
+  if calculate_score(computer_cards) == 0:
+    print("Its a Draw.")
+  elif calculate_score(user_cards) == 0:
+    print(f"You Win! Your score 21 with {user_cards} cards.")
+  elif calculate_score(computer_cards) == 0:
+    print(f"You Lose. Computer score 21 with {computer_cards} cards.")
+  elif calculate_score(user_cards) > 21:
+    print(f"You Lose. You score over 21, with {user_cards} cards.")
+  elif calculate_score(computer_cards) > 21:
+    print(f"You Win! Computer score over 21, with {computer_cards} cards.")
+  else:
+    if calculate_score(user_cards) > calculate_score(computer_cards):
+      print(f"You Win! Your score {calculate_score(user_cards)} and computer score {calculate_score(computer_cards)}.")
+    elif calculate_score(user_cards) < calculate_score(computer_cards):
+      print(f"You Lose. Your score {calculate_score(user_cards)} and computer score {calculate_score(computer_cards)}.")
+  
+    
 
 
 cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
@@ -102,7 +122,7 @@ def black_jack_game():
 
       print(f"Your cards {user_cards}, current score: {calculate_score(user_cards)}")
       print(f"Computer first card: {computer_cards[0]}")
-
+      
 
       if calculate_score(user_cards) == 0:
         end_of_the_game = True
@@ -121,14 +141,15 @@ def black_jack_game():
         else:
           while calculate_score(computer_cards) < 17:
             computer_cards.append(deal_card(cards))
-            print(f"Computer cards {computer_cards}, current score: {calculate_score(computer_cards)}")
-            if calculate_score(user_cards) == 21:
-              print(f"You Lose! Computer score 21 with {computer_cards} cards.")
+            print(f"Computer score: {calculate_score(computer_cards)}, with cards: {computer_cards}")
+            if calculate_score(computer_cards) == 21:
+              print(f"You Lose! Computer score 21.")
           end_of_the_game = True
 
   else:
+    compare(user_cards, computer_cards)
     print("The game has ended")
-    # clear()
+ 
     black_jack_game()
 
 
